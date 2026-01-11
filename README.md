@@ -1,282 +1,267 @@
-# Lorikeet Brand Guidelines
+# Lorikeet CX ROI Calculator
 
-This document outlines the brand identity guidelines for Lorikeet, including colors, typography, logo usage, iconography, and visual style.
+An interactive ROI calculator that demonstrates the financial impact of switching from pay-per-ticket AI solutions or human support teams to Lorikeet's pay-per-resolution model.
 
----
+## Project Purpose
 
-## Brand Colors
+This calculator serves as a strategic tool to help potential customers understand the cost savings and efficiency gains of using Lorikeet for customer experience (CX) operations. The page allows users to:
 
-### Primary Colors
+- Compare Lorikeet's pricing model against pay-per-ticket AI solutions
+- Compare Lorikeet's pricing model against human support teams
+- Calculate potential annual savings based on their specific metrics
+- See real-world proof through case studies
 
-**Primary Brand Color**
-- **Hex:** `#000000` / `#000` (Black) - Primary text and core brand elements
-- **Usage:** Headlines, primary CTAs, logo, key brand elements
+### Design Alignment Context
 
-**Background Colors**
-- **Hex:** `#FFFFFF` (White) - Primary backgrounds
-- **Hex:** `#0d0d0d`, `#121212`, `#131314`, `#131415`, `#151515`, `#161819`, `#181818` - Dark mode backgrounds
-- **Usage:** Backgrounds, negative space, text on dark backgrounds
+**Important Note:** This page was originally AI-generated and had design inconsistencies with the main Lorikeet landing page and brand guidelines. The current implementation represents an effort to align the calculator with Lorikeet's high-quality brand standards while maintaining its effectiveness as a financial demonstration tool.
 
-### Accent Colors
-
-**Blue Accents**
-- **Hex:** `#283feb` - Primary blue accent
-- **Hex:** `#287ceb` - Secondary blue accent
-- **Hex:** `#28b7eb` - Light blue accent
-- **Usage:** Interactive elements, links, CTAs, highlights
-
-**Green Accent**
-- **Hex:** `#11A911` - Success states, positive actions
-- **Usage:** Success indicators, positive feedback, confirmations
-
-### Neutral Colors
-
-**Gray Scale:**
-- **Hex:** `#1A1A1A` / `#1a1a1a` - Dark gray text
-- **Hex:** `#1D1D1B` / `#1D1D1D` - Secondary dark elements
-- **Hex:** `#18212d` - Dark blue-gray
-- **Hex:** `#252e3d` - Medium dark gray
-- **Hex:** `#1e3528` - Dark green-gray
-
-### Color Usage Guidelines
-
-- Maintain sufficient contrast ratios (WCAG AA minimum, AAA preferred)
-- Use primary colors for key interactive elements
-- Reserve accent colors for highlights and CTAs
-- Ensure colors work in both light and dark modes
+The goal is to ensure that this calculator page reflects the same level of polish, attention to detail, and brand consistency as the main Lorikeet website, rather than appearing as a separate, lower-quality tool.
 
 ---
 
-## Typography
+## How the Calculator Works
 
-### Primary Font
+### Calculation Methodology
 
-**Font Family:** **Geist**
+The calculator supports two baseline comparison modes:
 
-**Usage:** Primary headlines, hero text, key messaging, main navigation
+#### 1. Pay-Per-Ticket AI Baseline
 
-**Weights:**
-- Light (300)
-- Regular (400)
-- Medium (500)
-- Semibold (600)
-- Bold (700)
+**Inputs:**
 
-**Characteristics:** Modern, clean, highly readable sans-serif typeface designed for digital interfaces.
+- Tickets per month
+- Cost per ticket (from competitor AI solution)
+- Percentage of tickets solvable by AI
 
-### Secondary Fonts
+**Calculations:**
 
-**Font Family:** **Montserrat**
+- **Pay-per-ticket monthly cost:** `ticketsPerMonth × costPerTicket`
+- **Tickets resolved:** `ticketsPerMonth × (ticketsSolvableByAI / 100)`
+- **Tickets failed:** `ticketsPerMonth - ticketsResolved`
+- **Cost per resolution:** `monthlyCost / ticketsResolved`
 
-**Usage:** Secondary headlines, subheadings, emphasis text
+**Lorikeet Comparison:**
 
-**Weights:**
-- Regular (400)
-- Medium (500)
-- Semibold (600)
-- Bold (700)
+- Lorikeet only attempts tickets it's confident it can resolve
+- Uses a 1.4:1 success ratio (resolved:failed)
+- Charges **$0.75 per successful resolution**
+- **Lorikeet tickets attempted:** `resolved + (resolved / 1.4)`
+- **Lorikeet monthly cost:** `ticketsResolved × $0.75`
 
-**Font Family:** **Rethink Sans**
+#### 2. Human Team Baseline
 
-**Usage:** Body text, descriptions, UI elements, secondary content
+**Inputs:**
 
-**Weights:**
-- Regular (400)
-- Medium (500)
+- Fully loaded cost per agent per year (salary + benefits)
+- Utilization percentage (% of paid time spent on tickets)
+- Average handle time per ticket (in minutes)
+- Overhead/management percentage
 
-**Fallback Stack:**
-```css
-font-family: 'Geist', 'Montserrat', 'Rethink Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-```
+**Calculations:**
 
-### Typography Scale
+**Step 1: Calculate tickets per month from human metrics**
 
-```
-H1: 48px / 3rem (Desktop), 32px / 2rem (Mobile)
-H2: 36px / 2.25rem (Desktop), 28px / 1.75rem (Mobile)
-H3: 24px / 1.5rem (Desktop), 20px / 1.25rem (Mobile)
-H4: 20px / 1.25rem
-H5: 18px / 1.125rem
-H6: 16px / 1rem
-Body: 16px / 1rem
-Small: 14px / 0.875rem
-Caption: 12px / 0.75rem
-```
+- Assumes 40 hours/week per agent (2,080 hours/year)
+- Available hours per month: `(2080 / 12) × (utilizationPercent / 100)`
+- Available minutes per month: `availableHours × 60`
+- **Tickets per agent per month:** `availableMinutes / handleTimeMinutes`
 
-### Line Height
+**Step 2: Calculate human team costs**
 
-- Headlines: 1.2 (tight)
-- Body text: 1.5-1.6 (comfortable reading)
-- UI elements: 1.4
+- Monthly cost per agent: `(fullyLoadedCostPerYear / 12) × (1 + overheadPercent / 100)`
+- Cost per resolution: `monthlyCost / ticketsResolved`
+
+**Step 3: Calculate AI-solvable tickets**
+
+- Solvable tickets: `ticketsPerMonth × (ticketsSolvableByAI / 100)`
+
+**Step 4: Calculate cost for AI-solvable tickets (man-hours saved)**
+
+- Minutes for solvable tickets: `solvableTickets × handleTimeMinutes`
+- Hours for solvable tickets: `minutes / 60`
+- Agent fraction needed: `hoursForSolvableTickets / hoursPerMonthPerAgent`
+- **Cost for solvable tickets:** `agentFraction × monthlyCost × (1 + overheadPercent)`
+
+**Lorikeet Comparison:**
+
+- Resolves the same number of AI-solvable tickets
+- Charges **$0.75 per successful resolution**
+- **Lorikeet monthly cost:** `solvableTickets × $0.75`
+
+### Key Metrics Displayed
+
+1. **Cost Reduction:** Percentage reduction in cost per resolution vs. baseline
+2. **Annual Savings:** Total dollar amount saved per year
+3. **Cost Per Resolution:** Direct comparison between Lorikeet and baseline
+4. **Total Monthly Cost:** Overall monthly cost comparison
 
 ---
 
-## Logo Usage and Spacing Rules
+## Technical Architecture
 
-### Logo Clear Space
+### Technology Stack
 
-The minimum clear space around the Lorikeet logo should be equal to **1x the height of the logo** on all sides.
+- **Framework:** Next.js 14 (React 18)
+- **Styling:** Tailwind CSS
+- **UI Components:** Headless UI (for Switch component)
+- **Icons:** Lucide React
+- **TypeScript:** Full type safety throughout
+
+### Project Structure
 
 ```
-┌─────────────────────────┐
-│                         │
-│    [Clear Space: 1x]    │
-│         ┌───┐           │
-│         │   │           │
-│         │Logo│          │
-│         │   │           │
-│         └───┘           │
-│    [Clear Space: 1x]    │
-│                         │
-└─────────────────────────┘
+lorikeet-cxroi/
+├── app/
+│   ├── globals.css          # Global styles, animations, brand colors
+│   ├── layout.tsx           # Root layout
+│   └── page.tsx             # Main calculator page
+├── components/
+│   ├── Calculator.tsx       # Main calculator component with inputs
+│   ├── InputField.tsx       # Reusable input field with color variants
+│   ├── Slider.tsx           # Percentage slider for AI-solvable tickets
+│   ├── ResultsSummary.tsx   # Results display with stat cards
+│   ├── CaseStudy.tsx        # Customer case study section
+│   ├── Header.tsx           # Site header/navigation
+│   ├── CTAFooter.tsx        # Call-to-action footer
+│   └── AnimatedGuideLine.tsx # Animated vertical gradient line
+├── lib/
+│   └── calculator.ts        # Core calculation logic
+└── public/
+    ├── fonts/               # Custom brand fonts (PP Cirka, ABC Ginto)
+    └── images/              # Brand assets and case study images
 ```
 
-### Logo Placement
+### Key Components
 
-- **Minimum size:** 24px height (digital), 0.5" height (print)
-- **Preferred size:** 32-48px height (digital)
-- **Maximum size:** No maximum, but maintain aspect ratio
+#### Calculator Component
 
-### Logo Variations
+- Manages all user inputs and state
+- Conditionally renders inputs based on selected baseline
+- Handles real-time calculation updates
 
-- **Primary:** Full color logo on light backgrounds
-- **Inverse:** White/light logo on dark backgrounds
-- **Monochrome:** Single color version for limited color applications
+#### InputField Component
 
-### Logo Don'ts
+- Supports multiple color variants (yellow, pink, green, orange, blue, purple)
+- Each input box has a unique color-coded gradient background
+- Handles number formatting with commas
 
-❌ Do not stretch or distort the logo
-❌ Do not rotate the logo
-❌ Do not add effects (shadows, outlines, gradients) unless specified
-❌ Do not place on busy backgrounds without sufficient contrast
-❌ Do not use colors other than brand-approved colors
+#### Slider Component
 
----
+- Interactive percentage slider for "tickets solvable by AI"
+- Includes animated glow effect
+- Displays helper text with calculated ticket counts
 
-## Iconography Style
+#### ResultsSummary Component
 
-### Icon Style
+- Displays four key metrics in a grid layout
+- Hover effects with glow on stat boxes
+- Comparison cards show side-by-side Lorikeet vs. baseline costs
 
-**Style:** Modern, minimal, consistent line weight
+### Calculation Logic (`lib/calculator.ts`)
 
-**Characteristics:**
-- **Line weight:** 1.5-2px (24px icons), 2-2.5px (32px+ icons)
-- **Corner radius:** 2-4px for rounded elements
-- **Stroke style:** Solid, consistent
-- **Fill style:** Solid fills or outlined, depending on context
+The `calculateROI()` function is the core of the calculator:
 
-### Icon Library
+1. **Determines effective tickets per month** based on baseline type
+2. **Calculates costs for each model** (pay-per-ticket, human, Lorikeet)
+3. **Computes comparison metrics** (cost reduction, annual savings)
+4. **Returns structured results** for display
 
-*Recommended icon libraries:*
-- **Heroicons** - Clean, minimal, consistent
-- **Feather Icons** - Simple, elegant
-- **Lucide** - Modern, comprehensive
-- **Custom icons** - Designed to match brand aesthetic
+Key assumptions:
 
-### Icon Usage Guidelines
-
-- **Size consistency:** Use standard sizes (16px, 20px, 24px, 32px, 48px)
-- **Color:** Use brand colors, typically primary text color or accent colors
-- **Spacing:** Maintain consistent padding around icons (minimum 4px)
-- **Alignment:** Align icons with text baseline or center-align in buttons
-
-### Icon Categories
-
-- **Navigation:** Menu, search, user, settings
-- **Actions:** Add, edit, delete, save, cancel
-- **Status:** Success, error, warning, info
-- **Communication:** Chat, email, phone, message
-- **System:** Loading, refresh, close, expand
+- Lorikeet pricing: $0.75 per successful resolution
+- Lorikeet success ratio: 1.4:1 (resolved:failed)
+- Human agents: 40 hours/week, 2,080 hours/year
+- Pay-per-ticket solutions: Attempt all tickets, only resolve AI-solvable ones
 
 ---
 
-## Photography/Illustration Style
+## Design Features
 
-### Photography Style
+### Visual Elements
 
-**Overall Aesthetic:** Clean, professional, customer-focused
+1. **Color-Coded Input Boxes:** Each input field has a unique gradient background color for visual distinction
+2. **Animated Glow Effects:**
+   - Toggle switch has animated gradient border
+   - Slider has animated glow
+   - Stat boxes have hover glow effects
+3. **Gradient Backgrounds:** Yellow gradient backdrop on key sections
+4. **Animated Text:** "resolution" text uses animated gradient effect
+5. **Animated Guide Line:** Vertical gradient line connecting hero to calculator
 
-**Characteristics:**
-- **Lighting:** Bright, natural, well-lit
-- **Composition:** Clean backgrounds, focus on subjects
-- **Color grading:** Natural, slightly enhanced, brand-consistent
-- **Subjects:** Diverse, authentic, professional
-- **Mood:** Approachable, trustworthy, modern
+### Brand Consistency
 
-**Usage:**
-- Hero sections
-- Customer testimonials
-- Team photos
-- Product demonstrations
-- Case study imagery
-
-### Illustration Style
-
-**Overall Aesthetic:** Modern, minimal, friendly
-
-**Characteristics:**
-- **Style:** Flat design, minimal gradients, clean lines
-- **Color palette:** Brand colors with limited palette
-- **Detail level:** Simplified, not overly detailed
-- **Personality:** Friendly, approachable, professional
-- **Consistency:** Unified style across all illustrations
-
-**Usage:**
-- Product features
-- Process flows
-- Empty states
-- Onboarding
-- Error states
-- Decorative elements
-
-### Visual Guidelines
-
-**Do's:**
-✅ Use high-resolution images (minimum 2x for retina displays)
-✅ Maintain consistent visual style across all assets
-✅ Ensure images are optimized for web (WebP, AVIF when possible)
-✅ Use images that reflect diversity and inclusivity
-✅ Keep illustrations simple and scannable
-
-**Don'ts:**
-❌ Use stock photos that look generic or staged
-❌ Mix different illustration styles
-❌ Use low-resolution or pixelated images
-❌ Overcomplicate illustrations with excessive detail
-❌ Use images that don't align with brand values
+- Uses PP Cirka font for headlines (brand font)
+- Uses ABC Ginto for body text
+- Maintains black/white color scheme with colorful accents
+- Follows Lorikeet brand guidelines for spacing and typography
 
 ---
 
-## Additional Resources
+## Development
 
-### Design System
+### Getting Started
 
-For detailed component specifications, spacing system, and interactive elements, refer to the design system documentation.
+```bash
+# Install dependencies
+npm install
 
-### Asset Downloads
+# Run development server
+npm run dev
 
-- Logo files (SVG, PNG, PDF)
-- Icon library
-- Brand color palette files
-- Typography specifications
-- Photography guidelines
-- Illustration library
+# Build for production
+npm run build
 
-### Contact
+# Start production server
+npm start
+```
 
-For brand-related questions or asset requests, contact the design team.
+### Environment
+
+- Node.js 18+
+- Next.js 14
+- TypeScript 5.5+
+
+---
+
+## Future Improvements
+
+### Design Alignment
+
+- [ ] Further refine visual consistency with main Lorikeet site
+- [ ] Ensure all animations match brand guidelines
+- [ ] Optimize color palette to match brand standards exactly
+
+### Functionality
+
+- [ ] Add more granular calculation options
+- [ ] Support multiple agents for human baseline
+- [ ] Add export/share functionality for calculations
+- [ ] Include more case studies or testimonials
+
+### Performance
+
+- [ ] Optimize font loading
+- [ ] Lazy load case study images
+- [ ] Add analytics tracking
+
+---
+
+## Notes
+
+This calculator is designed to be a high-quality, brand-consistent tool that demonstrates Lorikeet's value proposition. The focus is on creating a polished experience that matches the quality of the main Lorikeet website while providing clear, actionable financial insights for potential customers.
 
 ---
 
 ## Version History
 
-- **v1.0** - Initial brand guidelines document (January 2025)
-  - Extracted brand colors from lorikeetcx.ai
-  - Documented typography: Geist (primary), Montserrat & Rethink Sans (secondary)
-  - Established logo usage and spacing rules
-  - Defined iconography and visual style guidelines
+- **v0.1.0** - Initial implementation
+  - Pay-per-ticket baseline comparison
+  - Human team baseline comparison
+  - Real-time calculation updates
+  - Case study integration
+  - Design alignment improvements
 
 ---
 
-**Note:** This document should be updated as brand guidelines evolve. For the most current brand assets and specifications, refer to the official design system or contact the design team.
-
+**Maintained by:** Aryan Pokharna
+**Last Updated:** January 2025
