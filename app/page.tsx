@@ -18,7 +18,7 @@ export default function Home() {
             >
               <span className="block">
                 Stop paying per{" "}
-                <span className="line-through text-black">ticket</span>.
+                <span className="line-through text-black">ticket.</span>
               </span>
               <span className="block">
                 Start paying per{" "}
